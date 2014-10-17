@@ -40,16 +40,9 @@ setup(
     packages=[
         'vera',
         'vera.migrations',
-        'dbio',
-        'dbio.migrations',
     ],
     install_requires=[
         'wq.db',
-        'wq.io',
-        'celery',
-        'redis',
-        'Pillow',
-        'python-dateutil'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -65,8 +58,5 @@ setup(
     test_suite='tests',
     tests_require=[
         'psycopg2',
-        'celery',
-        'redis',
-        'python-dateutil',
     ],
 )

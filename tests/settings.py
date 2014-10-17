@@ -14,7 +14,6 @@ INSTALLED_APPS = (
     'wq.db.patterns.relate',
     'wq.db.contrib.files',
     'vera',
-    'dbio',
 )
 
 DATABASES = {
@@ -27,11 +26,6 @@ DATABASES = {
 
 ROOT_URLCONF = "tests.urls"
 MEDIA_ROOT = os.path.join(os.path.dirname(__file__), "media")
-
-WQ_DEFAULT_REPORT_STATUS = 100
-
-CELERY_ALWAYS_EAGER = True
-CELERY_RESULT_BACKEND = 'redis://localhost/0'
 
 SWAP = False
 
