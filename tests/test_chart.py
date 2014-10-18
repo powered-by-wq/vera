@@ -2,9 +2,12 @@ from rest_framework.test import APITestCase
 from rest_pandas.test import parse_csv
 from django.conf import settings
 import unittest
+try:
+    from matplotlib.cbook import boxplot_stats
+except ImportError:
+    boxplot_stats = None
+
 import swapper
-
-
 Report = swapper.load_model('vera', 'Report')
 ReportStatus = swapper.load_model('vera', 'ReportStatus')
 Parameter = swapper.load_model('vera', 'Parameter')
@@ -81,7 +84,10 @@ class SwapTestCase(APITestCase):
         self.assertEqual(d4['temp'], 0.2)
         self.assertEqual(d4['snow'], 0.0)
 
-    @unittest.skipUnless(settings.SWAP, "requires swapped models")
+    @unittest.skipUnless(
+        settings.SWAP and boxplot_stats,
+        "requires swapped models and matplotlib 1.4+"
+    )
     def test_boxplot(self):
         response = self.client.get("/chart/site1/temp/boxplot.csv")
 
