@@ -61,5 +61,7 @@ setup(
     test_suite='tests',
     tests_require=[
         'psycopg2',
+        'rest_pandas',
+        'matplotlib',
     ],
 )
