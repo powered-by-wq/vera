@@ -6,6 +6,7 @@ env:
   global:
    - DRF="djangorestframework==2.4.2"
    - WQDB="git+https://github.com/wq/wq.db.git"
+   - DRP="git+https://github.com/wq/django-rest-pandas.git"
   matrix:
    - DJANGO="django==1.6.7" DJANGO_SETTINGS_MODULE="tests.settings"
    - DJANGO="django==1.6.7" DJANGO_SETTINGS_MODULE="tests.swap_settings"
@@ -17,6 +18,7 @@ before_script:
 install:
  - pip install $DJANGO
  - pip install $DRF
+ - pip install $DRP
  - pip install $WQDB
 script:
  - python setup.py test

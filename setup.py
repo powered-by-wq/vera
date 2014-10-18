@@ -62,6 +62,6 @@ setup(
     tests_require=[
         'psycopg2',
         'rest_pandas',
-        'matplotlib',
+        'matplotlib>=1.4',
     ],
 )
