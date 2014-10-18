@@ -75,7 +75,7 @@ class ReportManager(models.RelatedModelManager):
 
 class ValidReportManager(ReportManager):
     def get_queryset(self):
-        qs = super(ValidReportManager, self)
+        qs = super(ValidReportManager, self).get_queryset()
         return qs.filter(status__is_valid=True).order_by(*VALID_REPORT_ORDER)
 
 
