@@ -3,8 +3,6 @@ from rest_pandas.test import parse_csv
 from django.conf import settings
 import unittest
 import swapper
-import csv
-from io import StringIO
 
 
 Report = swapper.load_model('vera', 'Report')
@@ -41,12 +39,13 @@ class SwapTestCase(APITestCase):
 
         valid = ReportStatus.objects.create(pk=1, is_valid=True)
         for date, site, param, value in data:
-            report = Report.objects.create_report(
+            Report.objects.create_report(
                 (site, date),
                 {param: value},
                 status=valid
             )
 
+    @unittest.skipUnless(settings.SWAP, "requires swapped models")
     def test_timeseries(self):
         response = self.client.get("/chart/site1/site2/temp/timeseries.csv")
         datasets = self.parse_csv(response)
@@ -66,6 +65,7 @@ class SwapTestCase(APITestCase):
         self.assertEqual(d0['date'], '2014-01-01')
         self.assertEqual(d0['value'], 0.5)
 
+    @unittest.skipUnless(settings.SWAP, "requires swapped models")
     def test_scatter(self):
         response = self.client.get("/chart/site2/temp/snow/scatter.csv")
 
@@ -81,6 +81,7 @@ class SwapTestCase(APITestCase):
         self.assertEqual(d4['temp'], 0.2)
         self.assertEqual(d4['snow'], 0.0)
 
+    @unittest.skipUnless(settings.SWAP, "requires swapped models")
     def test_boxplot(self):
         response = self.client.get("/chart/site1/temp/boxplot.csv")
 

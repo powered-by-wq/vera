@@ -2,12 +2,16 @@ from wq.db.rest import app
 from rest_framework import serializers
 from wq.db.patterns.base.serializers import TypedAttachmentSerializer
 from wq.db.rest.serializers import ModelSerializer
+from wq.db.contrib.chart.serializers import ChartSerializer
 
 import swapper
 from wq.db.patterns.base.models import extract_nested_key
 Event = swapper.load_model('vera', 'Event')
 Parameter = swapper.load_model('vera', 'Parameter')
 Result = swapper.load_model('vera', 'Result')
+EventResult = swapper.load_model('vera', 'EventResult')
+
+EVENT_INDEX = Event._meta.unique_together[0]
 
 
 class ResultSerializer(TypedAttachmentSerializer):
@@ -65,3 +69,39 @@ class ReportSerializer(ModelSerializer):
             if user.is_authenticated():
                 data['user'] = user.pk
         return super(ReportSerializer, self).from_native(data, files)
+
+
+class EventResultSerializer(ChartSerializer):
+    key_model = Event
+    key_fields = EVENT_INDEX
+
+    parameter_fields = ["parameter", "units"]
+    parameter_lookups = [
+        "result_type.primary_identifier.slug",
+        "result_type.units"
+    ]
+
+    value_field = "value"
+    value_lookup = "result_value"
+
+    @property
+    def key_lookups(self):
+        """"
+        Map fields in EVENT_INDEX to actual natural key lookup values.
+        E.g. the default Event has two natural key fields, assuming
+        Site is an IdentifiedModel:
+            site -> event_site.primary_identifier.slug
+            date -> event_date
+        """
+        lookups = []
+        for lookup in Event.get_natural_key_fields():
+            lookup = lookup.replace('__', '.')
+            lookup = lookup.replace(
+                "primary_identifiers.", "primary_identifier."
+            )
+            lookup = "event_" + lookup
+            lookups.append(lookup)
+        return lookups
+
+    class Meta:
+        model = EventResult
