@@ -11,7 +11,6 @@ class Migration(migrations.Migration):
         swapper.dependency('auth', 'User'),
         swapper.dependency('vera', 'Event'),
         swapper.dependency('vera', 'ReportStatus'),
-        swapper.dependency('vera', 'Parameter'),
         swapper.dependency('vera', 'Site'),
     ]
 
