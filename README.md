@@ -1,6 +1,6 @@
 [![vera](https://raw.github.com/wq/wq/master/images/256/vera.png)](http://wq.io/vera)
 
-[wq.db: vera](http://wq.io/vera) is the reference implementation of the Entity-Record-Attribute-Value ([ERAV](http://wq.io/docs/erav)) data model. ERAV is an extension to Entity-Attribute-Value (EAV) that adds support for maintaining multiple versions of an entity with different provenance [^1].
+[vera](http://wq.io/vera) is the reference implementation of the Entity-Record-Attribute-Value ([ERAV](http://wq.io/docs/erav)) data model. ERAV is an extension to Entity-Attribute-Value (EAV) that adds support for maintaining multiple versions of an entity with different provenance [^1].
 
 [![Build Status](https://travis-ci.org/wq/vera.png?branch=master)](https://travis-ci.org/wq/vera)
 [![PyPI Package](https://pypip.in/version/vera/badge.png)](https://pypi.python.org/pypi/vera)
@@ -13,10 +13,10 @@ Getting Started
 ===============
 
 ```bash
-pip install vera
+pip3 install vera
 ```
 
-See [the documentation](http://wq.io/docs/) for more information. See <https://github.com/wq/vera> to report any issues.
+vera is an extension to [wq.db](http://wq.io/wq.db), the database component of the [wq framework](http://wq.io).  See [the wq documentation](http://wq.io/docs/) for more information. See <https://github.com/wq/vera> to report any issues.
 
 References
 ----------
