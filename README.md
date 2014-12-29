@@ -2,8 +2,8 @@
 
 [vera](http://wq.io/vera) is the reference implementation of the Entity-Record-Attribute-Value ([ERAV](http://wq.io/docs/erav)) data model. ERAV is an extension to Entity-Attribute-Value (EAV) that adds support for maintaining multiple versions of an entity with different provenance [^1].
 
-[![Build Status](https://travis-ci.org/wq/vera.png?branch=master)](https://travis-ci.org/wq/vera)
-[![PyPI Package](https://pypip.in/version/vera/badge.png)](https://pypi.python.org/pypi/vera)
+[![Build Status](https://travis-ci.org/wq/vera.svg?branch=master)](https://travis-ci.org/wq/vera)
+[![PyPI Package](https://pypip.in/version/vera/badge.svg?style=flat)](https://pypi.python.org/pypi/vera)
 
 Tested on Python 2.7 and 3.4, with Django 1.6 and 1.7.
 
