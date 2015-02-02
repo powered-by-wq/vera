@@ -161,7 +161,7 @@ vera ships with an [EventResultSerializer] and views that leverage [wq.db chart]
 [dbio]: http://wq.io/dbio
 [relate]: http://wq.io/docs/relate
 [denormalized]: http://en.wikipedia.org/wiki/Denormalization
-[wq.db chart]: http//wq.io/docs/chart
+[wq.db chart]: http://wq.io/docs/chart
 [wq/chart.js]: http://wq.io/docs/chart-js
 [wq/pandas.js]: http://wq.io/docs/pandas-js
 [EventResultSerializer]: https://github.com/wq/vera/blob/master/vera/serializers.py
