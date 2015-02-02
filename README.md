@@ -82,7 +82,7 @@ All site instances have a `valid_events` property that returns all of the event 
 
 The `Report` model corresponds to the *Record* in the ERAV data model.  `Report` tracks the provenance metadata about the `Event`, e.g. who entered it, when it was entered, etc.  Depending on when and how data is entered, there can be multiple `Reports` describing the same event.  The status of each of these reports is tracked separately.
 
-At a minimum, `Report` instances have an `event` attribute, a `status` attribute (see below), a `user` attribute, and an `entered` timestamp.  Additional attributes can be added by extending `BaseReport` and swapping out `Report` via the `WQ_REPORT_MODEL` setting.  Note that the `Report` model contains only provenance metadata and no information about the event itself - the `Event` model should contain that information.
+At a minimum, `Report` instances have an `event` attribute, a `status` attribute (see below), a `user` attribute, and an `entered` timestamp.  `user` and `entered` are set automatically when a report is created via the [REST API].  Additional attributes can be added by extending `BaseReport` and swapping out `Report` via the `WQ_REPORT_MODEL` setting.  Note that the `Report` model contains only provenance metadata and no information about the event itself - the `Event` model should contain that information.
 
 In addition to the default manager (`objects`), `Report` also has a custom manager, `vaild_objects` that includes only reports with valid statuses.  `Report` instances have a `vals` property that can be used to retrieve (and set) a `dict` mapping of parameter names to result values (see below).
 
@@ -109,7 +109,9 @@ At a minimum, `Parameter` instances have a `name`, an `is_numeric` boolean, and 
 
 The `Result` model corresponds to the *Value* in the ERAV data model.  `Result` manages the definitions of the data attributes (or characteristics, or fields) being tracked by the project.  `Result` is effectively a many-to-many relationship linking `Report` and `Parameter` with a value: e.g. "Report #123 has a Temperature value of 15".  Note that `Result` does not link to `Event` directly - this is a core distinction of the [ERAV] model.
 
-At a minimum, `Result` instances have a `type` (which references `Parameter`), a `report`, and `value_text` and `value_numeric` fields - usually only one of which is set for a given `Result`, depending on the `is_numeric` property of the `Parameter`.  `Result` instances also contain an `is_empty` property to facilitate fast filtering during analysis (see below).  Additional attributes and custom behavior can be added by extending `BaseResult` and swapping out `Result` via the `WQ_RESULT_MODEL` setting.  Note that if `Result` is swapped out, `EventResult` should be as well.
+At a minimum, `Result` instances have a `type` (which references `Parameter`), a `report`, and `value_text` and `value_numeric` fields - usually only one of which is set for a given `Result`, depending on the `is_numeric` property of the `Parameter`.  `Result` instances also contain an `empty` property to facilitate fast filtering during analysis (see below).  Additional attributes and custom behavior can be added by extending `BaseResult` and swapping out `Result` via the `WQ_RESULT_MODEL` setting.  Note that if `Result` is swapped out, `EventResult` should be as well.
+
+`Result` instances have a settable `value` attribute which is internally mapped to the `value_text` or `value_numeric` properties depending on the `Parameter`.  `Result` instances also have an `is_empty(val)` method which is used to set the `empty` property.  The default implementation counts `None`, empty strings, and strings containing only whitespace as empty.
 
 ## `EventResult`
 
@@ -147,12 +149,19 @@ WQ_EVENT_MODEL = "myapp.Event"
 WQ_EVENTRESULT_MODEL = "myapp.EventResult"
 ```
 
+vera ships with an [EventResultSerializer] and views that leverage [wq.db chart]'s Pandas-based serializers.  This makes it possible to quickly generate d3.js charts from the `EventResult` table via [wq/chart.js] and [wq/pandas.js].
+
 [ERAV]: http://wq.io/docs/erav
 [wq.db]: http://wq.io/wq.db
 [wq framework]: http://wq.io/
 [Django models]: https://docs.djangoproject.com/en/1.7/topics/db/models/
 [swappable]: https://github.com/wq/django-swappable-models
 [identify]: http://wq.io/docs/identify
+[REST API]: http://wq.io/docs/about-rest
 [dbio]: http://wq.io/dbio
 [relate]: http://wq.io/docs/relate
 [denormalized]: http://en.wikipedia.org/wiki/Denormalization
+[wq.db chart]: http//wq.io/docs/chart
+[wq/chart.js]: http://wq.io/docs/chart-js
+[wq/pandas.js]: http://wq.io/docs/pandas-js
+[EventResultSerializer]: https://github.com/wq/vera/blob/master/vera/serializers.py
