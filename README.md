@@ -86,7 +86,7 @@ At a minimum, `Report` instances have an `event` attribute, a `status` attribute
 
 In addition to the default manager (`objects`), `Report` also has a custom manager, `vaild_objects` that includes only reports with valid statuses.  `Report` instances have a `vals` property that can be used to retrieve (and set) a `dict` mapping of parameter names to result values (see below).
 
-In cases where there are more than one valid report for an event, there may be an ambiguity if reports contain contradicting data.  In this case the `WQ_VALID_REPORT_ORDER` setting can be used control which reports are given priority.  The default setting is `("-entered", )`, which gives priority to the most recently entered reports.  (See the [CSCW paper](http://wq.io/research/provenance)) for an in depth discussion of conflicting reports).
+In cases where there are more than one valid report for an event, there may be an ambiguity if reports contain contradicting data.  In this case the `WQ_VALID_REPORT_ORDER` setting can be used control which reports are given priority.  The default setting is `("-entered", )`, which gives priority to the most recently entered reports.  (See the [CSCW paper](http://wq.io/research/provenance) for an in depth discussion of conflicting reports).
 
 ## `ReportStatus`
 To support custom workflows, the list of report statuses is maintained as a separate model, `ReportStatus`.  `ReportStatus` instances have a short code (`slug`), a `name`, and an `is_valid` boolean indicating whether reports with that status should be considered valid.  Additional attributes can be added by extending `BaseReportStatus` and swapping out `ReportStatus` via the `WQ_REPORTSTATUS_MODEL` setting.
