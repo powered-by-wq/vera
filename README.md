@@ -1,6 +1,8 @@
-[![vera](https://raw.github.com/wq/wq/master/images/256/vera.png)](http://wq.io/vera)
+[![vera](https://raw.github.com/wq/wq/master/images/256/vera.png)](https://wq.io/vera)
 
-[vera](http://wq.io/vera) is the reference implementation of the Entity-Record-Attribute-Value ([ERAV]) data model. ERAV is an extension to Entity-Attribute-Value (EAV) that adds support for maintaining multiple versions of an entity with different provenance [^1].
+[vera](https://wq.io/vera) is the reference implementation of the Entity-Record-Attribute-Value ([ERAV]) data model. ERAV is an extension to Entity-Attribute-Value (EAV) that adds support for maintaining multiple versions of an entity with different provenance [^1].
+
+[**Release Notes**](https://github.com/wq/vera/releases) | [**Documentation**](https://wq.io/vera) | [**Issue Tracker**](https://github.com/wq/vera/issues)
 
 [![Build Status](https://travis-ci.org/wq/vera.svg?branch=master)](https://travis-ci.org/wq/vera)
 [![PyPI Package](https://pypip.in/version/vera/badge.svg?style=flat)](https://pypi.python.org/pypi/vera)
@@ -9,7 +11,7 @@ Tested on Python 2.7 and 3.4, with Django 1.6 and 1.7.
 
 The implementation of ERAV provided by vera is optimized for storing and tracking changes to *time series data* as it is exchanged between disparate technical platforms (e.g. mobile devices, Excel spreadsheets, and third-party databases).  In this context, ERAV can be interpreted to mean Event-Report-Attribute-Value, as it represents a series of *events* being described by the *reports* submitted about them by various contributors in e.g. an environmental monitoring or citizen science project.
 
-[^1]: Sheppard, S. A., Wiggins, A., and Terveen, L. [Capturing Quality: Retaining Provenance for Curated Volunteer Monitoring Data](http://wq.io/research/provenance). To appear in Proceedings of the 17th ACM Conference on Computer Supported Cooperative Work and Social Computing (CSCW 2014). ACM. February 2014.
+[^1]: Sheppard, S. A., Wiggins, A., and Terveen, L. [Capturing Quality: Retaining Provenance for Curated Volunteer Monitoring Data](https://wq.io/research/provenance). To appear in Proceedings of the 17th ACM Conference on Computer Supported Cooperative Work and Social Computing (CSCW 2014). ACM. February 2014.
 
 # Getting Started
 
@@ -86,7 +88,7 @@ At a minimum, `Report` instances have an `event` attribute, a `status` attribute
 
 In addition to the default manager (`objects`), `Report` also has a custom manager, `vaild_objects` that includes only reports with valid statuses.  `Report` instances have a `vals` property that can be used to retrieve (and set) a `dict` mapping of parameter names to result values (see below).
 
-In cases where there are more than one valid report for an event, there may be an ambiguity if reports contain contradicting data.  In this case the `WQ_VALID_REPORT_ORDER` setting can be used control which reports are given priority.  The default setting is `("-entered", )`, which gives priority to the most recently entered reports.  (See the [CSCW paper](http://wq.io/research/provenance) for an in depth discussion of conflicting reports).
+In cases where there are more than one valid report for an event, there may be an ambiguity if reports contain contradicting data.  In this case the `WQ_VALID_REPORT_ORDER` setting can be used control which reports are given priority.  The default setting is `("-entered", )`, which gives priority to the most recently entered reports.  (See the [CSCW paper](https://wq.io/research/provenance) for an in depth discussion of conflicting reports).
 
 ## `ReportStatus`
 To support custom workflows, the list of report statuses is maintained as a separate model, `ReportStatus`.  `ReportStatus` instances have a short code (`slug`), a `name`, and an `is_valid` boolean indicating whether reports with that status should be considered valid.  Additional attributes can be added by extending `BaseReportStatus` and swapping out `ReportStatus` via the `WQ_REPORTSTATUS_MODEL` setting.
@@ -151,17 +153,17 @@ WQ_EVENTRESULT_MODEL = "myapp.EventResult"
 
 vera ships with an [EventResultSerializer] and views that leverage [wq.db chart]'s Pandas-based serializers.  This makes it possible to quickly generate d3.js charts from the `EventResult` table via [wq/chart.js] and [wq/pandas.js].
 
-[ERAV]: http://wq.io/docs/erav
-[wq.db]: http://wq.io/wq.db
-[wq framework]: http://wq.io/
+[ERAV]: https://wq.io/docs/erav
+[wq.db]: https://wq.io/wq.db
+[wq framework]: https://wq.io/
 [Django models]: https://docs.djangoproject.com/en/1.7/topics/db/models/
 [swappable]: https://github.com/wq/django-swappable-models
-[identify]: http://wq.io/docs/identify
-[REST API]: http://wq.io/docs/about-rest
-[dbio]: http://wq.io/dbio
-[relate]: http://wq.io/docs/relate
+[identify]: https://wq.io/docs/identify
+[REST API]: https://wq.io/docs/about-rest
+[dbio]: https://wq.io/dbio
+[relate]: https://wq.io/docs/relate
 [denormalized]: http://en.wikipedia.org/wiki/Denormalization
-[wq.db chart]: http://wq.io/docs/chart
-[wq/chart.js]: http://wq.io/docs/chart-js
-[wq/pandas.js]: http://wq.io/docs/pandas-js
+[wq.db chart]: https://wq.io/docs/chart
+[wq/chart.js]: https://wq.io/docs/chart-js
+[wq/pandas.js]: https://wq.io/docs/pandas-js
 [EventResultSerializer]: https://github.com/wq/vera/blob/master/vera/serializers.py
