@@ -1,34 +1,33 @@
-from wq.db.contrib.chart import views as chart
+from rest_pandas import (
+    PandasView, PandasUnstackedSerializer, PandasScatterSerializer,
+    PandasBoxplotSerializer,
+)
 from .serializers import EventResultSerializer
+from .filters import ChartFilterBackend
+
 
 import swapper
 EventResult = swapper.load_model('vera', 'EventResult')
 
 
-class ChartView(chart.ChartView):
-    model = EventResult
+class ChartView(PandasView):
+    queryset = EventResult.objects.all()
     serializer_class = EventResultSerializer
-    exclude_apps = ['dbio']
+    filter_backends = [ChartFilterBackend]
 
     def get_queryset(self):
         qs = super(ChartView, self).get_queryset()
         qs = qs.select_related('event_site', 'result_type')
         return qs
 
-    def filter_by_site(self, qs, ids):
-        return qs.filter(event_site__in=ids)
 
-    def filter_by_parameter(self, qs, ids):
-        return qs.filter(result_type__in=ids)
+class TimeSeriesView(ChartView):
+    pandas_serializer_class = PandasUnstackedSerializer
 
 
-class TimeSeriesView(ChartView, chart.TimeSeriesMixin):
-    pass
+class ScatterView(ChartView):
+    pandas_serializer_class = PandasScatterSerializer
 
 
-class ScatterView(ChartView, chart.ScatterMixin):
-    pass
-
-
-class BoxPlotView(ChartView, chart.BoxPlotMixin):
-    pass
+class BoxPlotView(ChartView):
+    pandas_serializer_class = PandasBoxplotSerializer

@@ -27,4 +27,4 @@ MEDIA_ROOT = os.path.join(os.path.dirname(__file__), "media")
 
 SWAP = False
 
-from wq.db.rest.settings import *
+from wq.db.default_settings import *  # noqa

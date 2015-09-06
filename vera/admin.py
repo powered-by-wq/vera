@@ -1,7 +1,6 @@
 from wq.db.patterns import admin
 from wq.db.patterns.models import Authority, RelationshipType
 import swapper
-from django.conf import settings
 
 
 class ResultInline(admin.TabularInline):

@@ -1,17 +1,17 @@
 language: python
+sudo: false
 python:
  - "2.7"
  - "3.4"
 env:
   global:
-   - DRF="djangorestframework==2.4.2"
-   - WQDB="git+https://github.com/wq/wq.db.git"
-   - DRP="git+https://github.com/wq/django-rest-pandas.git"
+   - DRF="djangorestframework==3.2.3"
+   - WQDB="wq.db==0.8.2"
+   - DRP="https://github.com/wq/django-rest-pandas/archive/chart.zip"
   matrix:
-   - DJANGO="django==1.6.7" DJANGO_SETTINGS_MODULE="tests.settings"
-   - DJANGO="django==1.6.7" DJANGO_SETTINGS_MODULE="tests.swap_settings"
-   - DJANGO="django==1.7"   DJANGO_SETTINGS_MODULE="tests.settings"
-   - DJANGO="django==1.7"   DJANGO_SETTINGS_MODULE="tests.swap_settings"
+   - DJANGO="django==1.7.10"
+   - DJANGO="django==1.8.4"
+   - DJANGO="django==1.8.4" LINT=1
 before_script:
  - createdb -Upostgres vera_test
  - psql -Upostgres vera_test -c "CREATE EXTENSION postgis;"
@@ -20,7 +20,8 @@ install:
  - pip install $DRF
  - pip install $DRP
  - pip install $WQDB
+ - pip install flake8
 script:
- - python setup.py test
+ - ./runtests.sh
 services:
  - redis-server

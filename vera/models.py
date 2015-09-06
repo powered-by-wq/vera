@@ -1,4 +1,5 @@
-from wq.db.patterns import models
+from django.db import models
+from wq.db.patterns import models as patterns
 import swapper
 from django.db.models.signals import post_save
 from django.core.exceptions import ImproperlyConfigured
@@ -19,7 +20,7 @@ VALID_REPORT_ORDER = getattr(settings, "WQ_VALID_REPORT_ORDER", ('-entered',))
 # Extend these when swapping out default implementation (below)
 
 
-class BaseSite(models.NaturalKeyModel):
+class BaseSite(patterns.NaturalKeyModel):
     @property
     def valid_events(self):
         events = self.event_set.filter(
@@ -32,7 +33,7 @@ class BaseSite(models.NaturalKeyModel):
         abstract = True
 
 
-class BaseEvent(models.NaturalKeyModel):
+class BaseEvent(patterns.NaturalKeyModel):
     site = models.ForeignKey(
         MODELS['Site'], null=True, blank=True, related_name="event_set",
     )
@@ -64,7 +65,7 @@ class BaseEvent(models.NaturalKeyModel):
         abstract = True
 
 
-class ReportManager(models.RelatedModelManager):
+class ReportManager(patterns.RelatedModelManager):
     def create_report(self, event_key, values, **kwargs):
         Event = swapper.load_model('vera', 'Event')
         kwargs['event'] = Event.objects.find(*event_key)
@@ -79,7 +80,7 @@ class ValidReportManager(ReportManager):
         return qs.filter(status__is_valid=True).order_by(*VALID_REPORT_ORDER)
 
 
-class BaseReport(models.RelatedModel):
+class BaseReport(patterns.RelatedModel):
     event = models.ForeignKey(MODELS['Event'], related_name="report_set")
     entered = models.DateTimeField(blank=True)
     user = models.ForeignKey(
@@ -111,7 +112,7 @@ class BaseReport(models.RelatedModel):
         params, success = Parameter.objects.resolve_keys(keys)
         if not success:
             missing = [
-                name for name, params in params.items() if params is None
+                name for name, resolved in params.items() if resolved is None
             ]
             raise TypeError(
                 "Could not identify one or more parameters: %s!"
@@ -139,7 +140,7 @@ class BaseReport(models.RelatedModel):
         ordering = VALID_REPORT_ORDER
 
 
-class BaseReportStatus(models.NaturalKeyModel):
+class BaseReportStatus(patterns.NaturalKeyModel):
     slug = models.SlugField()
     name = models.CharField(max_length=255)
     is_valid = models.BooleanField(default=False)
@@ -152,7 +153,7 @@ class BaseReportStatus(models.NaturalKeyModel):
         unique_together = [['slug']]
 
 
-class BaseParameter(models.IdentifiedRelatedModel):
+class BaseParameter(patterns.IdentifiedRelatedModel):
     name = models.CharField(max_length=255)
     is_numeric = models.BooleanField(default=False)
     units = models.CharField(max_length=50, null=True, blank=True)

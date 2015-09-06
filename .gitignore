@@ -2,3 +2,4 @@ README.rst
 __pycache__
 *.egg*
 *.swp
+*.pyc

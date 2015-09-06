@@ -224,11 +224,16 @@ class VeraRestTestCase(APITestCase):
             'site__latitude': 45,
             'site__longitude': -95.5,
             'date': '2014-01-03',
-            'result-temperature-value': 6,
-            'result-notes-value': 'Test Observation',
+            'results[0][type_id]': 'temperature',
+            'results[0][value]': 6,
+            'results[1][type_id]': 'notes',
+            'results[1][value]': 'Test Observation',
         }
         response = self.client.post('/reports.json', form)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(
+            response.status_code, status.HTTP_201_CREATED,
+            response.data
+        )
         self.assertEqual(
             response.data['event_label'],
             "45.0, -95.5 on 2014-01-03"
@@ -247,11 +252,16 @@ class VeraRestTestCase(APITestCase):
             'site__latitude': 45,
             'site__longitude': -95.5,
             'date': '2014-01-04',
-            'result-temperature-value': 6,
-            'result-notes-value': 'Test Observation 2',
+            'results[0][type_id]': 'temperature',
+            'results[0][value]': 6,
+            'results[1][type_id]': 'notes',
+            'results[1][value]': 'Test Observation 2',
         }
         response1 = self.client.post('/reports.json', form1)
-        self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(
+            response1.status_code, status.HTTP_201_CREATED,
+            response1.data
+        )
         event_id = response1.data['event_id']
         event = self.client.get('/events/%s.json' % event_id).data
         self.assertEqual(len(event['results']), 0)
@@ -262,12 +272,13 @@ class VeraRestTestCase(APITestCase):
             'site__latitude': 45,
             'site__longitude': -95.5,
             'date': '2014-01-04',
-            'result-temperature-value': 7,
-            'status': 'valid'
+            'results[0][type_id]': 'temperature',
+            'results[0][value]': 7,
+            'status_id': 'valid'
         }
         response2 = self.client.post('/reports.json', form2)
-        self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response1.data['event_id'], event_id)
+        self.assertEqual(response2.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response2.data['event_id'], event_id)
         event = self.client.get('/events/%s.json' % event_id).data
         self.assertEqual(len(event['results']), 1)
 
@@ -276,7 +287,7 @@ class VeraRestTestCase(APITestCase):
         # and the notes from the first.
         self.client.patch(
             '/reports/%s.json' % response1.data['id'],
-            {'status': 'valid'}
+            {'status_id': 'valid'}
         )
         event = self.client.get('/events/%s.json' % event_id).data
         self.assertEqual(len(event['results']), 2)

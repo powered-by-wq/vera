@@ -1,8 +1,10 @@
 from wq.db.rest import app
 from rest_framework import serializers
-from wq.db.patterns.base.serializers import TypedAttachmentSerializer
+from wq.db.patterns.base.serializers import (
+    TypedAttachmentSerializer, AttachedModelSerializer
+)
 from wq.db.rest.serializers import ModelSerializer
-from wq.db.contrib.chart.serializers import ChartSerializer
+
 
 import swapper
 from wq.db.patterns.base.models import extract_nested_key
@@ -11,36 +13,34 @@ Parameter = swapper.load_model('vera', 'Parameter')
 Result = swapper.load_model('vera', 'Result')
 EventResult = swapper.load_model('vera', 'EventResult')
 
-EVENT_INDEX = Event._meta.unique_together[0]
+
+class SettableField(serializers.Field):
+    def to_representation(self, value):
+        return value
+
+    def to_internal_value(self, value):
+        return value
 
 
 class ResultSerializer(TypedAttachmentSerializer):
-    attachment_fields = ['id', 'value']
-    type_model = Parameter
-    value = serializers.Field()
+    value = SettableField()
     object_field = 'report'
+    type_model = Parameter
 
-    def to_native(self, obj):
-        result = super(ResultSerializer, self).to_native(obj)
+    def to_representation(self, obj):
+        result = super(ResultSerializer, self).to_representation(obj)
         if getattr(obj.type, 'units', None) is not None:
             result['units'] = obj.type.units
-        has_parent = self.parent and hasattr(self.parent.opts, 'model')
-        if not has_parent:
-            result['report_id'] = obj.report.pk
         return result
 
-    def from_native(self, data, files):
-        obj = super(ResultSerializer, self).from_native(data, files)
-        obj.value = data['value']
-        return obj
-
-    class Meta:
-        exclude = ('label', 'report_id', 'report_label',
-                   'value_text', 'value_numeric')
+    class Meta(TypedAttachmentSerializer.Meta):
+        exclude = ('report', 'value_text', 'value_numeric')
+        model = Result
 
 
 class EventSerializer(ModelSerializer):
-    is_valid = serializers.Field()
+    is_valid = serializers.ReadOnlyField()
+    results = ResultSerializer(many=True, read_only=True)
 
     def get_default_fields(self, *args, **kwargs):
         fields = super(EventSerializer, self).get_default_fields(
@@ -52,56 +52,48 @@ class EventSerializer(ModelSerializer):
         return fields
 
 
-class ReportSerializer(ModelSerializer):
-    is_valid = serializers.Field()
+class ReportSerializer(AttachedModelSerializer):
+    is_valid = serializers.ReadOnlyField()
+    results = ResultSerializer(many=True)
 
-    def from_native(self, data, files):
-        if hasattr(data, 'dict'):
-            data = data.dict()
-        event_key = extract_nested_key(data, Event)
+    def to_internal_value(self, data):
+        data = data.copy()
+        data_dict = data.dict() if hasattr(data, 'dict') else data
+        event_key = extract_nested_key(data_dict, Event)
         if event_key:
             event, is_new = Event.objects.get_or_create_by_natural_key(
                 *event_key
             )
-            data['event'] = event.pk
-        if 'request' in self.context and not data.get('user', None):
+            data['event_id'] = event.pk
+        if 'request' in self.context and not data.get('user_id', None):
             user = self.context['request'].user
             if user.is_authenticated():
-                data['user'] = user.pk
-        return super(ReportSerializer, self).from_native(data, files)
+                data['user_id'] = user.pk
+        return super(ReportSerializer, self).to_internal_value(data)
 
 
-class EventResultSerializer(ChartSerializer):
-    key_model = Event
-    key_fields = EVENT_INDEX
-
-    parameter_fields = ["parameter", "units"]
-    parameter_lookups = [
-        "result_type.primary_identifier.slug",
-        "result_type.units"
-    ]
-
-    value_field = "value"
-    value_lookup = "result_value"
-
-    @property
-    def key_lookups(self):
-        """"
-        Map fields in EVENT_INDEX to actual natural key lookup values.
-        E.g. the default Event has two natural key fields, assuming
-        Site is an IdentifiedModel:
-            site -> event_site.primary_identifier.slug
-            date -> event_date
-        """
-        lookups = []
-        for lookup in Event.get_natural_key_fields():
-            lookup = lookup.replace('__', '.')
-            lookup = lookup.replace(
-                "primary_identifiers.", "primary_identifier."
-            )
-            lookup = "event_" + lookup
-            lookups.append(lookup)
-        return lookups
+class EventResultSerializer(serializers.Serializer):
+    site = serializers.ReadOnlyField(
+        source='event_site.primary_identifier.slug'
+    )
+    date = serializers.ReadOnlyField(
+        source='event_date'
+    )
+    parameter = serializers.ReadOnlyField(
+        source='result_type.primary_identifier.slug'
+    )
+    units = serializers.ReadOnlyField(
+        source='result_type.units'
+    )
+    value = serializers.ReadOnlyField(
+        source='result_value'
+    )
 
     class Meta:
-        model = EventResult
+        pandas_index = ['date']
+        pandas_unstacked_header = ['site', 'parameter', 'units']
+        pandas_scatter_coord = ['units', 'parameter']
+        pandas_scatter_header = ['site']
+        pandas_boxplot_group = 'site'
+        pandas_boxplot_date = 'date'
+        pandas_boxplot_header = ['units', 'parameter']
