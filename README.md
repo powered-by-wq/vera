@@ -2,12 +2,17 @@
 
 [vera](https://wq.io/vera) is the reference implementation of the Entity-Record-Attribute-Value ([ERAV]) data model. ERAV is an extension to Entity-Attribute-Value (EAV) that adds support for maintaining multiple versions of an entity with different provenance [^1].
 
-[**Release Notes**](https://github.com/wq/vera/releases) | [**Documentation**](https://wq.io/vera) | [**Issue Tracker**](https://github.com/wq/vera/issues)
 
-[![Build Status](https://travis-ci.org/wq/vera.svg?branch=master)](https://travis-ci.org/wq/vera)
-[![PyPI Package](https://pypip.in/version/vera/badge.svg?style=flat)](https://pypi.python.org/pypi/vera)
+[![Latest PyPI Release](https://img.shields.io/pypi/v/vera.svg)](https://pypi.python.org/pypi/vera)
+[![Release Notes](https://img.shields.io/github/release/wq/vera.svg)](https://github.com/wq/vera/releases)
+[![License](https://img.shields.io/pypi/l/vera.svg)](https://wq.io/license)
+[![GitHub Stars](https://img.shields.io/github/stars/wq/vera.svg)](https://github.com/wq/vera/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/wq/vera.svg)](https://github.com/wq/vera/network)
+[![GitHub Issues](https://img.shields.io/github/issues/wq/vera.svg)](https://github.com/wq/vera/issues)
 
-Tested on Python 2.7 and 3.4, with Django 1.6 and 1.7.
+[![Travis Build Status](https://img.shields.io/travis/wq/vera.svg)](https://travis-ci.org/wq/vera)
+[![Python Support](https://img.shields.io/pypi/pyversions/vera.svg)](https://pypi.python.org/pypi/vera)
+[![Django Support](https://img.shields.io/badge/Django-1.7%2C%201.8-blue.svg)](https://pypi.python.org/pypi/vera)
 
 The implementation of ERAV provided by vera is optimized for storing and tracking changes to *time series data* as it is exchanged between disparate technical platforms (e.g. mobile devices, Excel spreadsheets, and third-party databases).  In this context, ERAV can be interpreted to mean Event-Report-Attribute-Value, as it represents a series of *events* being described by the *reports* submitted about them by various contributors in e.g. an environmental monitoring or citizen science project.
 
