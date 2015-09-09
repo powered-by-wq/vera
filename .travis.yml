@@ -6,7 +6,7 @@ python:
 env:
   global:
    - DRF="djangorestframework==3.2.3"
-   - WQDB="wq.db==0.8.2"
+   - WQDB="https://github.com/wq/wq.db/archive/master.zip"
    - DRP="https://github.com/wq/django-rest-pandas/archive/chart.zip"
   matrix:
    - DJANGO="django==1.7.10"
