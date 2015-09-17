@@ -1,4 +1,4 @@
-from wq.db.rest import app
+from wq.db import rest
 import swapper
 from .serializers import EventSerializer, ReportSerializer
 
@@ -7,10 +7,9 @@ Event = swapper.load_model('vera', 'Event')
 Report = swapper.load_model('vera', 'Report')
 ReportStatus = swapper.load_model('vera', 'ReportStatus')
 Parameter = swapper.load_model('vera', 'Parameter')
-Result = swapper.load_model('vera', 'Result')
 
-app.router.register_model(Site)
-app.router.register_model(Event, serializer=EventSerializer)
-app.router.register_model(Report, serializer=ReportSerializer)
-app.router.register_model(ReportStatus, lookup='slug')
-app.router.register_model(Parameter)
+rest.router.register_model(Site)
+rest.router.register_model(Event, serializer=EventSerializer)
+rest.router.register_model(Report, serializer=ReportSerializer)
+rest.router.register_model(ReportStatus, lookup='slug')
+rest.router.register_model(Parameter)

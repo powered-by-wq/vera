@@ -1,4 +1,3 @@
-from wq.db.rest import app
 from rest_framework import serializers
 from wq.db.patterns.base.serializers import (
     TypedAttachmentSerializer, AttachedModelSerializer
@@ -42,14 +41,8 @@ class EventSerializer(ModelSerializer):
     is_valid = serializers.ReadOnlyField()
     results = ResultSerializer(many=True, read_only=True)
 
-    def get_default_fields(self, *args, **kwargs):
-        fields = super(EventSerializer, self).get_default_fields(
-            *args, **kwargs
-        )
-        if self.opts.depth > 0:
-            Serializer = app.router.get_serializer_for_model(Result)
-            fields['results'] = Serializer(context=self.context)
-        return fields
+    class Meta:
+        list_exclude = ('results',)
 
 
 class ReportSerializer(AttachedModelSerializer):

@@ -1,4 +1,5 @@
-from wq.db.patterns import admin
+from django.contrib import admin
+from wq.db.patterns import admin as patterns
 from wq.db.patterns.models import Authority, RelationshipType
 import swapper
 
@@ -13,7 +14,7 @@ class ReportInline(admin.TabularInline):
     extra = 0
 
 
-class ParameterAdmin(admin.IdentifiedModelAdmin):
+class ParameterAdmin(patterns.IdentifiedModelAdmin):
     list_display = ('name', 'units')
     list_filter = ('units', 'is_numeric')
 
@@ -27,7 +28,7 @@ class EventAdmin(admin.ModelAdmin):
 
 # Register models with admin, but only if they haven't been swapped
 default_admin = {
-    'Site': admin.IdentifiedRelatedModelAdmin,
+    'Site': patterns.IdentifiedRelatedModelAdmin,
     'Event': EventAdmin,
     'Report': ReportAdmin,
     'ReportStatus': admin.ModelAdmin,
@@ -42,5 +43,5 @@ for model in default_admin:
     )
 
 # Auto-register relevant patterns' type models
-admin.site.register(Authority, admin.AuthorityAdmin)
+admin.site.register(Authority, patterns.AuthorityAdmin)
 admin.site.register(RelationshipType)
