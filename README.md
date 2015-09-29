@@ -28,7 +28,7 @@ vera is an extension to [wq.db], the database component of the [wq framework].  
 
 # Models
 
-The core of vera is a collection of [Django models] that describe the various components of the ERAV data model.  There are four primary models (ERAV) and three auxilary models, for a total of seven models.  The mapping from vera models to their ERAV conceptual equivalents is below:
+The core of vera is a collection of [Django models] that describe the various components of the ERAV data model.  There are four primary models (ERAV) and three auxiliary models, for a total of seven models.  The mapping from vera models to their ERAV conceptual equivalents is below:
 
 vera model | ERAV equivalent
 -----|------
