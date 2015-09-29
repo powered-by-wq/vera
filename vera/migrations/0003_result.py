@@ -8,7 +8,7 @@ import swapper
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('vera', '0001_initial'),
+        ('vera', '0002_event_report'),
         swapper.dependency('vera', 'Event'),
         swapper.dependency('vera', 'Report'),
         swapper.dependency('vera', 'Parameter'),
