@@ -1,12 +1,9 @@
 from rest_framework import serializers
-from wq.db.patterns.base.serializers import (
-    TypedAttachmentSerializer, AttachedModelSerializer
-)
+from wq.db.patterns import serializers as patterns
 from wq.db.rest.serializers import ModelSerializer
 
 
 import swapper
-from wq.db.patterns.base.models import extract_nested_key
 Event = swapper.load_model('vera', 'Event')
 Parameter = swapper.load_model('vera', 'Parameter')
 Result = swapper.load_model('vera', 'Result')
@@ -21,7 +18,7 @@ class SettableField(serializers.Field):
         return value
 
 
-class ResultSerializer(TypedAttachmentSerializer):
+class ResultSerializer(patterns.TypedAttachmentSerializer):
     value = SettableField()
     object_field = 'report'
     type_model = Parameter
@@ -32,7 +29,7 @@ class ResultSerializer(TypedAttachmentSerializer):
             result['units'] = obj.type.units
         return result
 
-    class Meta(TypedAttachmentSerializer.Meta):
+    class Meta(patterns.TypedAttachmentSerializer.Meta):
         exclude = ('report', 'value_text', 'value_numeric')
         model = Result
 
@@ -45,19 +42,12 @@ class EventSerializer(ModelSerializer):
         list_exclude = ('results',)
 
 
-class ReportSerializer(AttachedModelSerializer):
+class ReportSerializer(patterns.NaturalKeyModelSerializer):
     is_valid = serializers.ReadOnlyField()
     results = ResultSerializer(many=True)
 
     def to_internal_value(self, data):
         data = data.copy()
-        data_dict = data.dict() if hasattr(data, 'dict') else data
-        event_key = extract_nested_key(data_dict, Event)
-        if event_key:
-            event, is_new = Event.objects.get_or_create_by_natural_key(
-                *event_key
-            )
-            data['event_id'] = event.pk
         if 'request' in self.context and not data.get('user_id', None):
             user = self.context['request'].user
             if user.is_authenticated():

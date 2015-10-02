@@ -221,9 +221,9 @@ class VeraRestTestCase(APITestCase):
     @unittest.skipIf(settings.SWAP, "requires non-swapped models")
     def test_vera_post(self):
         form = {
-            'site__latitude': 45,
-            'site__longitude': -95.5,
-            'date': '2014-01-03',
+            'event[site][latitude]': 45,
+            'event[site][longitude]': -95.5,
+            'event[date]': '2014-01-03',
             'results[0][type_id]': 'temperature',
             'results[0][value]': 6,
             'results[1][type_id]': 'notes',
@@ -249,9 +249,9 @@ class VeraRestTestCase(APITestCase):
         # Submit first report (but don't validate it)
         # Event should exist but have no result values
         form1 = {
-            'site__latitude': 45,
-            'site__longitude': -95.5,
-            'date': '2014-01-04',
+            'event[site][latitude]': 45,
+            'event[site][longitude]': -95.5,
+            'event[date]': '2014-01-04',
             'results[0][type_id]': 'temperature',
             'results[0][value]': 6,
             'results[1][type_id]': 'notes',
@@ -269,15 +269,18 @@ class VeraRestTestCase(APITestCase):
         # Submit second report and validate it
         # Event should contain a single result value
         form2 = {
-            'site__latitude': 45,
-            'site__longitude': -95.5,
-            'date': '2014-01-04',
+            'event[site][latitude]': 45,
+            'event[site][longitude]': -95.5,
+            'event[date]': '2014-01-04',
             'results[0][type_id]': 'temperature',
             'results[0][value]': 7,
-            'status_id': 'valid'
+            'status[slug]': 'valid'
         }
         response2 = self.client.post('/reports.json', form2)
-        self.assertEqual(response2.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(
+            response2.status_code, status.HTTP_201_CREATED,
+            response2.data
+        )
         self.assertEqual(response2.data['event_id'], event_id)
         event = self.client.get('/events/%s.json' % event_id).data
         self.assertEqual(len(event['results']), 1)
@@ -287,7 +290,7 @@ class VeraRestTestCase(APITestCase):
         # and the notes from the first.
         self.client.patch(
             '/reports/%s.json' % response1.data['id'],
-            {'status_id': 'valid'}
+            {'status[slug]': 'valid'}
         )
         event = self.client.get('/events/%s.json' % event_id).data
         self.assertEqual(len(event['results']), 2)
