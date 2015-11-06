@@ -42,7 +42,6 @@ setup(
         'vera.migrations',
     ],
     install_requires=[
-        'rest-pandas',
         'wq.db>=0.7.0',
     ],
     classifiers=[
@@ -61,6 +60,7 @@ setup(
     ],
     test_suite='tests',
     tests_require=[
+        'rest-pandas',
         'psycopg2',
     ],
 )
