@@ -2,7 +2,7 @@ from os.path import join, dirname
 from setuptools import setup
 
 LONG_DESCRIPTION = """
-Reference implementation of the ERAV model, an extension to EAV with support for maintaining multiple versions of an entity with different provenance.
+Reference implementation of the ERAV data model for citizen science.  ERAV is an extension to EAV with support for maintaining multi-faceted provenance metadata for an entity.
 """
 
 
@@ -35,14 +35,14 @@ setup(
     author_email='andrew@wq.io',
     url='http://wq.io/vera',
     license='MIT',
-    description='Reference implementation of the ERAV data integration model',
+    description=LONG_DESCRIPTION,
     long_description=parse_markdown_readme(),
     packages=[
         'vera',
         'vera.migrations',
     ],
     install_requires=[
-        'wq.db>=0.7.0',
+        'wq.db>=0.8.0',
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',

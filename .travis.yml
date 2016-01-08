@@ -5,13 +5,13 @@ python:
  - "3.4"
 env:
   global:
-   - DRF="djangorestframework==3.2.3"
-   - WQDB="https://github.com/wq/wq.db/archive/master.zip"
-   - DRP="https://github.com/wq/django-rest-pandas/archive/master.zip"
+   - DRF="djangorestframework==3.3.2"
+   - WQDB="wq.db==0.8.4"
+   - DRP="rest-pandas==0.4.0",
   matrix:
-   - DJANGO="django==1.7.10"
-   - DJANGO="django==1.8.4"
-   - DJANGO="django==1.8.4" LINT=1
+   - DJANGO="django==1.7.11"
+   - DJANGO="django==1.8.8"
+   - DJANGO="django==1.8.8" LINT=1
 before_script:
  - createdb -Upostgres vera_test
  - psql -Upostgres vera_test -c "CREATE EXTENSION postgis;"
