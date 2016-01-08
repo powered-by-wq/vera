@@ -71,7 +71,7 @@ The `Site` model represents the location where an event occured.  It is not stri
 
 ```python
 # myapp/models.py
-from wq.db.patterns import models
+from django.db import models
 from vera.models import BaseSite
 
 class Site(models.IdentifiedModel, models.LocatedModel, BaseSite):
