@@ -44,7 +44,7 @@ The vera models are all [swappable], which means they can be subclassed and exte
 
 ```python
 # myapp/models.py
-from wq.db.patterns import models
+from django.db import models
 from vera.models import BaseEvent
 
 class Event(BaseEvent):
@@ -140,7 +140,7 @@ Whenever `Event` or `Result` are swapped out, `EventResult` should be swapped as
 
 ```python
 # myapp/models.py
-from wq.db.patterns import models
+from django.db import models
 from vera.models import BaseEvent, Result
 
 class Event(BaseEvent):
@@ -156,7 +156,7 @@ WQ_EVENT_MODEL = "myapp.Event"
 WQ_EVENTRESULT_MODEL = "myapp.EventResult"
 ```
 
-vera ships with an [EventResultSerializer] and views that leverage [wq.db chart]'s Pandas-based serializers.  This makes it possible to quickly generate d3.js charts from the `EventResult` table via [wq/chart.js] and [wq/pandas.js].
+vera ships with an [EventResultSerializer] and views that leverage [Django REST Pandas]' charting serializers.  This makes it possible to quickly generate d3.js charts from the `EventResult` table via [wq/chart.js] and [wq/pandas.js].
 
 [ERAV]: https://wq.io/docs/erav
 [wq.db]: https://wq.io/wq.db
@@ -168,7 +168,7 @@ vera ships with an [EventResultSerializer] and views that leverage [wq.db chart]
 [dbio]: https://wq.io/dbio
 [relate]: https://wq.io/docs/relate
 [denormalized]: http://en.wikipedia.org/wiki/Denormalization
-[wq.db chart]: https://wq.io/docs/chart
+[Django REST Pandas]: https://github.com/wq/django-rest-pandas
 [wq/chart.js]: https://wq.io/docs/chart-js
 [wq/pandas.js]: https://wq.io/docs/pandas-js
 [EventResultSerializer]: https://github.com/wq/vera/blob/master/vera/serializers.py
