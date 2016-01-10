@@ -15,7 +15,8 @@ class Migration(migrations.Migration):
             name='Parameter',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
+                ('name', models.CharField(blank=True, db_index=True, max_length=255)),
+                ('slug', models.CharField(blank=True, unique=True, max_length=255)),
                 ('is_numeric', models.BooleanField(default=False)),
                 ('units', models.CharField(null=True, max_length=50, blank=True)),
             ],

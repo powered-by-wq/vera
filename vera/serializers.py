@@ -20,8 +20,6 @@ class SettableField(serializers.Field):
 
 class ResultSerializer(patterns.TypedAttachmentSerializer):
     value = SettableField()
-    object_field = 'report'
-    type_model = Parameter
 
     def to_representation(self, obj):
         result = super(ResultSerializer, self).to_representation(obj)
@@ -32,6 +30,8 @@ class ResultSerializer(patterns.TypedAttachmentSerializer):
     class Meta(patterns.TypedAttachmentSerializer.Meta):
         exclude = ('report', 'value_text', 'value_numeric')
         model = Result
+
+        object_field = 'report'
 
 
 class EventSerializer(ModelSerializer):
@@ -57,13 +57,13 @@ class ReportSerializer(patterns.NaturalKeyModelSerializer):
 
 class EventResultSerializer(serializers.Serializer):
     site = serializers.ReadOnlyField(
-        source='event_site.primary_identifier.slug'
+        source='event_site.slug',
     )
     date = serializers.ReadOnlyField(
         source='event_date'
     )
     parameter = serializers.ReadOnlyField(
-        source='result_type.primary_identifier.slug'
+        source='result_type.slug',
     )
     units = serializers.ReadOnlyField(
         source='result_type.units'

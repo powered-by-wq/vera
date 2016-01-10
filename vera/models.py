@@ -154,7 +154,6 @@ class BaseReportStatus(patterns.NaturalKeyModel):
 
 
 class BaseParameter(patterns.IdentifiedRelatedModel):
-    name = models.CharField(max_length=255)
     is_numeric = models.BooleanField(default=False)
     units = models.CharField(max_length=50, null=True, blank=True)
 
@@ -166,6 +165,7 @@ class BaseParameter(patterns.IdentifiedRelatedModel):
 
     class Meta:
         abstract = True
+        unique_together = [['slug']]
         ordering = ('name',)
 
 

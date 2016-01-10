@@ -6,8 +6,8 @@ python:
 env:
   global:
    - DRF="djangorestframework==3.3.2"
-   - WQDB="wq.db==0.8.4"
-   - DRP="rest-pandas==0.4.0",
+   - WQDB="https://github.com/wq/wq.db/archive/master.zip"
+   - DRP="rest-pandas==0.4.0"
   matrix:
    - DJANGO="django==1.7.11"
    - DJANGO="django==1.8.8"
@@ -23,5 +23,3 @@ install:
  - pip install flake8
 script:
  - ./runtests.sh
-services:
- - redis-server
