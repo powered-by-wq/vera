@@ -1,4 +1,5 @@
 from django.db import models
+from natural_keys import NaturalKeyModel
 from wq.db.patterns import models as patterns
 import swapper
 from django.db.models.signals import post_save
@@ -20,7 +21,7 @@ VALID_REPORT_ORDER = getattr(settings, "WQ_VALID_REPORT_ORDER", ('-entered',))
 # Extend these when swapping out default implementation (below)
 
 
-class BaseSite(patterns.NaturalKeyModel):
+class BaseSite(NaturalKeyModel):
     @property
     def valid_events(self):
         events = self.event_set.filter(
@@ -33,7 +34,7 @@ class BaseSite(patterns.NaturalKeyModel):
         abstract = True
 
 
-class BaseEvent(patterns.NaturalKeyModel):
+class BaseEvent(NaturalKeyModel):
     site = models.ForeignKey(
         MODELS['Site'], null=True, blank=True, related_name="event_set",
     )
@@ -140,7 +141,7 @@ class BaseReport(patterns.RelatedModel):
         ordering = VALID_REPORT_ORDER
 
 
-class BaseReportStatus(patterns.NaturalKeyModel):
+class BaseReportStatus(NaturalKeyModel):
     slug = models.SlugField()
     name = models.CharField(max_length=255)
     is_valid = models.BooleanField(default=False)
@@ -153,7 +154,7 @@ class BaseReportStatus(patterns.NaturalKeyModel):
         unique_together = [['slug']]
 
 
-class BaseParameter(patterns.IdentifiedRelatedModel):
+class BaseParameter(patterns.IdentifiedModel):
     is_numeric = models.BooleanField(default=False)
     units = models.CharField(max_length=50, null=True, blank=True)
 

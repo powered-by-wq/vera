@@ -42,7 +42,8 @@ setup(
         'vera.migrations',
     ],
     install_requires=[
-        'wq.db>=0.8.0',
+        'natural-keys',
+        'wq.db>=1.0.0-a1',
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',

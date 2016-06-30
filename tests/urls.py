@@ -1,7 +1,15 @@
 from django.conf.urls import patterns, include, url
-from wq.db.rest import app
+from wq.db import rest
 from vera import views
-from wq.db.contrib.chart.urls import make_urls
+from rest_framework.urlpatterns import format_suffix_patterns
+
+
+def make_urls(views):
+    urls = [
+        url(r'^(?P<ids>[^\.]+)/' + name + '$', cls.as_view())
+        for name, cls in views.items()
+    ]
+    return format_suffix_patterns(patterns('', *urls))
 
 chart_urls = make_urls({
     'timeseries': views.TimeSeriesView,
@@ -9,9 +17,8 @@ chart_urls = make_urls({
     'boxplot': views.BoxPlotView,
 })
 
-app.autodiscover()
 urlpatterns = patterns(
     '',
-    url(r'^',       include(app.router.urls)),
+    url(r'^',       include(rest.router.urls)),
     url(r'^chart',  include(chart_urls))
 )

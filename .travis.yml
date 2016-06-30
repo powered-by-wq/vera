@@ -3,15 +3,16 @@ sudo: false
 python:
  - "2.7"
  - "3.4"
+ - "3.5"
 env:
   global:
-   - DRF="djangorestframework==3.3.2"
-   - WQDB="https://github.com/wq/wq.db/archive/master.zip"
+   - DRF="djangorestframework==3.3.3"
+   - WQDB="wq.db==1.0.0a1"
    - DRP="rest-pandas==0.4.0"
   matrix:
-   - DJANGO="django==1.7.11"
-   - DJANGO="django==1.8.8"
-   - DJANGO="django==1.8.8" LINT=1
+   - DJANGO="django==1.8.13"
+   - DJANGO="django==1.9.7"
+   - DJANGO="django==1.9.7" LINT=1
 before_script:
  - createdb -Upostgres vera_test
  - psql -Upostgres vera_test -c "CREATE EXTENSION postgis;"
@@ -20,6 +21,7 @@ install:
  - pip install $DRF
  - pip install $DRP
  - pip install $WQDB
+ - pip install https://github.com/wq/django-natural-keys/archive/master.zip
  - pip install flake8
 script:
  - ./runtests.sh

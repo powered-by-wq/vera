@@ -1,4 +1,11 @@
-from .settings import *  # noqa
+from .settings import (  # noqa
+    SECRET_KEY,
+    MIDDLEWARE_CLASSES,
+    INSTALLED_APPS,
+    DATABASES,
+    ROOT_URLCONF,
+    MEDIA_ROOT,
+)
 
 SWAP = True
 
