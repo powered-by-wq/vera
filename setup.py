@@ -30,7 +30,7 @@ def parse_markdown_readme():
 
 setup(
     name='vera',
-    version='1.0.0-dev',
+    version='1.0.0b1',
     author='S. Andrew Sheppard',
     author_email='andrew@wq.io',
     url='https://wq.io/vera',
@@ -43,7 +43,7 @@ setup(
     ],
     install_requires=[
         'natural-keys',
-        'wq.db>=1.0.0-a1',
+        'wq.db>=1.0.0b1',
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
