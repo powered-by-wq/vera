@@ -6,13 +6,14 @@ python:
  - "3.5"
 env:
   global:
-   - DRF="djangorestframework==3.3.3"
-   - WQDB="wq.db==1.0.0a1"
-   - DRP="rest-pandas==0.4.0"
+   - DRF="djangorestframework==3.4.6"
+   - WQDB="wq.db==1.0.0b1"
+   - DRP="rest-pandas==0.4.1"
   matrix:
-   - DJANGO="django==1.8.13"
-   - DJANGO="django==1.9.7"
-   - DJANGO="django==1.9.7" LINT=1
+   - DJANGO="django==1.8.14"
+   - DJANGO="django==1.9.9"
+   - DJANGO="django==1.10.1
+   - DJANGO="django==1.10.1" LINT=1
 before_script:
  - createdb -Upostgres vera_test
  - psql -Upostgres vera_test -c "CREATE EXTENSION postgis;"
@@ -21,7 +22,6 @@ install:
  - pip install $DRF
  - pip install $DRP
  - pip install $WQDB
- - pip install https://github.com/wq/django-natural-keys/archive/master.zip
  - pip install flake8
 script:
  - ./runtests.sh
