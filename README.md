@@ -1,6 +1,6 @@
 [![vera](https://raw.github.com/wq/wq/master/images/256/vera.png)](https://wq.io/vera)
 
-[vera](https://wq.io/vera) is the reference implementation of the Entity-Record-Attribute-Value ([ERAV]) data model. ERAV is an extension to Entity-Attribute-Value (EAV) that adds support for maintaining multi-faceted provenance metadata for an entity[^1].
+[vera](https://wq.io/vera) is the reference implementation of the Entity-Record-Attribute-Value ([ERAV]) data model. ERAV is an extension to Entity-Attribute-Value (EAV) that adds support for maintaining multi-faceted provenance metadata for an entity [^1].
 
 
 [![Latest PyPI Release](https://img.shields.io/pypi/v/vera.svg)](https://pypi.python.org/pypi/vera)
