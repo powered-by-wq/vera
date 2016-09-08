@@ -16,7 +16,9 @@ env:
    - DJANGO="django==1.10.1" LINT=1
 before_script:
  - createdb -Upostgres vera_test
+ - createdb -Upostgres vera_swap_test
  - psql -Upostgres vera_test -c "CREATE EXTENSION postgis;"
+ - psql -Upostgres vera_swap_test -c "CREATE EXTENSION postgis;"
 install:
  - pip install $DJANGO
  - pip install $DRF
