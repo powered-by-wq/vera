@@ -30,7 +30,7 @@ def parse_markdown_readme():
 
 setup(
     name='vera',
-    version='1.0.0b1',
+    version='1.0.0-dev',
     author='S. Andrew Sheppard',
     author_email='andrew@wq.io',
     url='https://wq.io/vera',
