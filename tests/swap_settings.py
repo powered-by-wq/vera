@@ -9,8 +9,9 @@ from .settings import (  # noqa
 SWAP = True
 
 INSTALLED_APPS += ("tests.swap_app",)
-WQ_REPORT_MODEL = "swap_app.Record"
 WQ_SITE_MODEL = "swap_app.Site"
+WQ_RESULT_MODEL = "swap_app.Result"
+WQ_EVENTRESULT_MODEL = "swap_app.EventResult"
 
 DATABASES = {
     'default': {

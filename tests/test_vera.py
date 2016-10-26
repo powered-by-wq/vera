@@ -1,4 +1,3 @@
-import unittest
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.contrib.auth.models import User
@@ -6,7 +5,6 @@ import datetime
 from vera.models import (
     Event, Report, ReportStatus, Site, Parameter, EventResult
 )
-from django.conf import settings
 
 
 def value_by_type(attachments):
@@ -17,12 +15,12 @@ def value_by_type(attachments):
 
 class VeraTestCase(APITestCase):
     def setUp(self):
-        if settings.SWAP:
-            return
-        self.site = Site.objects.find(45, -95)
+        self.site = Site.objects.find('site-1')
         self.user = User.objects.create(username='testuser')
-        self.valid = ReportStatus.objects.create(is_valid=True, slug='valid')
-        self.invalid = ReportStatus.objects.create(slug='invalid')
+        self.valid = ReportStatus.objects.find('valid')
+        self.valid.is_valid = True
+        self.valid.save()
+        self.invalid = ReportStatus.objects.find('invalid')
 
         # Numeric parameters
         param1 = Parameter.objects.find('Temperature')
@@ -39,10 +37,9 @@ class VeraTestCase(APITestCase):
         Parameter.objects.find('Notes')
         Parameter.objects.find('Rain')
 
-    @unittest.skipIf(settings.SWAP, "requires non-swapped models")
     def test_vera_simple(self):
         # Single report
-        event_key = [45, -95, '2014-01-01']
+        event_key = ['site-1', '2014-01-01']
         Report.objects.create_report(
             event_key,
             {
@@ -59,9 +56,8 @@ class VeraTestCase(APITestCase):
         self.assertEqual(instance.vals['temperature'], 5)
         self.assertEqual(instance.vals['notes'], 'Test Observation')
 
-    @unittest.skipIf(settings.SWAP, "requires non-swapped models")
     def test_vera_report_merge(self):
-        event_key = [45, -95, '2014-01-02']
+        event_key = ['site-1', '2014-01-02']
 
         # Three reports for the same event
 
@@ -106,9 +102,8 @@ class VeraTestCase(APITestCase):
         self.assertEqual(instance.vals['wind-speed'], 10)
         self.assertNotIn('rain', instance.vals)
 
-    @unittest.skipIf(settings.SWAP, "requires non-swapped models")
     def test_vera_invalid_param(self):
-        event_key = [45, -95, '2014-01-01']
+        event_key = ['site-1', '2014-01-01']
         values = {
             'Invalid Parameter': 5,
             'Notes': 'Test Observation'
@@ -120,9 +115,8 @@ class VeraTestCase(APITestCase):
                 user=self.user
             )
 
-    @unittest.skipIf(settings.SWAP, "requires non-swapped models")
     def test_vera_merge_eventresult(self):
-        event_key = [45, -95, '2014-01-10']
+        event_key = ['site-1', '2014-01-10']
 
         # Two reports for the same event, EventResult should contain
         # two rows for the event (which should correspond to event.results)
@@ -158,9 +152,8 @@ class VeraTestCase(APITestCase):
             'Test Observation 3'
         )
 
-    @unittest.skipIf(settings.SWAP, "requires non-swapped models")
     def test_vera_reset_eventresult(self):
-        event_key = [45, -95, '2014-01-11']
+        event_key = ['site-1', '2014-01-11']
 
         # Two reports for the same event, EventResult should contain
         # two rows for the event (which should correspond to event.results)
@@ -204,12 +197,12 @@ class VeraTestCase(APITestCase):
 
 class VeraRestTestCase(APITestCase):
     def setUp(self):
-        if settings.SWAP:
-            return
-        self.site = Site.objects.find(45, -95)
+        self.site = Site.objects.find('site-1')
         self.user = User.objects.create(username='testuser', is_superuser=True)
         self.client.force_authenticate(user=self.user)
-        self.valid = ReportStatus.objects.create(is_valid=True, slug='valid')
+        self.valid = ReportStatus.objects.find('valid')
+        self.valid.is_valid = True
+        self.valid.save()
 
         param1 = Parameter.objects.find('Temperature')
         param1.is_numeric = True
@@ -218,11 +211,9 @@ class VeraRestTestCase(APITestCase):
 
         Parameter.objects.find('Notes')
 
-    @unittest.skipIf(settings.SWAP, "requires non-swapped models")
     def test_vera_post(self):
         form = {
-            'event[site][latitude]': 45,
-            'event[site][longitude]': -95.5,
+            'event[site][slug]': 'site-1',
             'event[date]': '2014-01-03',
             'results[0][type_id]': 'temperature',
             'results[0][value]': 6,
@@ -236,7 +227,7 @@ class VeraRestTestCase(APITestCase):
         )
         self.assertEqual(
             response.data['event_label'],
-            "45.0, -95.5 on 2014-01-03"
+            "site-1 on 2014-01-03"
         )
         self.assertIn("results", response.data)
         self.assertEqual(len(response.data["results"]), 2)
@@ -244,13 +235,11 @@ class VeraRestTestCase(APITestCase):
         self.assertEqual(values['temperature'], 6.0)
         self.assertEqual(values['notes'], 'Test Observation')
 
-    @unittest.skipIf(settings.SWAP, "requires non-swapped models")
     def test_vera_post_merge(self):
         # Submit first report (but don't validate it)
         # Event should exist but have no result values
         form1 = {
-            'event[site][latitude]': 45,
-            'event[site][longitude]': -95.5,
+            'event[site][slug]': 'site-1',
             'event[date]': '2014-01-04',
             'results[0][type_id]': 'temperature',
             'results[0][value]': 6,
@@ -269,8 +258,7 @@ class VeraRestTestCase(APITestCase):
         # Submit second report and validate it
         # Event should contain a single result value
         form2 = {
-            'event[site][latitude]': 45,
-            'event[site][longitude]': -95.5,
+            'event[site][slug]': 'site-1',
             'event[date]': '2014-01-04',
             'results[0][type_id]': 'temperature',
             'results[0][value]': 7,

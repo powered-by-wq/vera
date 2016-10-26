@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 from wq.db import rest
-from vera import views
+from vera.results import views
 from rest_framework.urlpatterns import format_suffix_patterns
 
 

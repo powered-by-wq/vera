@@ -3,3 +3,4 @@ __pycache__
 *.egg*
 *.swp
 *.pyc
+migrations

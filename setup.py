@@ -1,5 +1,5 @@
 from os.path import join, dirname
-from setuptools import setup
+from setuptools import setup, find_packages
 
 LONG_DESCRIPTION = """
 Reference implementation of the ERAV data model for citizen science.  ERAV is an extension to EAV with support for maintaining multi-faceted provenance metadata for an entity.
@@ -37,10 +37,7 @@ setup(
     license='MIT',
     description=LONG_DESCRIPTION,
     long_description=parse_markdown_readme(),
-    packages=[
-        'vera',
-        'vera.migrations',
-    ],
+    packages=find_packages(exclude=['tests']),
     install_requires=[
         'natural-keys',
         'wq.db>=1.0.0b1',

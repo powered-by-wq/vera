@@ -7,7 +7,7 @@ from .filters import ChartFilterBackend
 
 
 import swapper
-EventResult = swapper.load_model('vera', 'EventResult')
+EventResult = swapper.load_model('results', 'EventResult')
 
 
 class ChartView(PandasView):

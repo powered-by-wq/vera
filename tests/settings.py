@@ -9,9 +9,11 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'wq.db.rest',
     'wq.db.rest.auth',
+
     'wq.db.patterns.identify',
-    'wq.db.patterns.relate',
-    'vera',
+    'vera.params',
+    'vera.series',
+    'vera.results',
 )
 
 DATABASES = {

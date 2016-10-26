@@ -1,16 +1,7 @@
 from rest_framework.test import APITestCase
 from rest_pandas.test import parse_csv
-from django.conf import settings
-import unittest
-try:
-    from matplotlib.cbook import boxplot_stats
-except ImportError:
-    boxplot_stats = None
 
-import swapper
-Report = swapper.load_model('vera', 'Report')
-ReportStatus = swapper.load_model('vera', 'ReportStatus')
-Parameter = swapper.load_model('vera', 'Parameter')
+from vera.models import Report, ReportStatus, Parameter
 
 
 class SwapTestCase(APITestCase):
@@ -40,7 +31,10 @@ class SwapTestCase(APITestCase):
             p.is_numeric = True
             p.save()
 
-        valid = ReportStatus.objects.create(pk=1, is_valid=True)
+        valid = ReportStatus.objects.find('valid')
+        valid.is_valid = True
+        valid.save()
+
         for date, site, param, value in data:
             Report.objects.create_report(
                 (site, date),
@@ -48,7 +42,6 @@ class SwapTestCase(APITestCase):
                 status=valid
             )
 
-    @unittest.skipUnless(settings.SWAP, "requires swapped models")
     def test_timeseries(self):
         response = self.client.get("/chart/site1/site2/temp/timeseries.csv")
         datasets = self.parse_csv(response)
@@ -68,7 +61,6 @@ class SwapTestCase(APITestCase):
         self.assertEqual(d0['date'], '2014-01-01')
         self.assertEqual(d0['value'], 0.5)
 
-    @unittest.skipUnless(settings.SWAP, "requires swapped models")
     def test_scatter(self):
         response = self.client.get("/chart/site2/temp/snow/scatter.csv")
 
@@ -84,10 +76,6 @@ class SwapTestCase(APITestCase):
         self.assertEqual(d4['temp-value'], 0.2)
         self.assertEqual(d4['snow-value'], 0.0)
 
-    @unittest.skipUnless(
-        settings.SWAP and boxplot_stats,
-        "requires swapped models and matplotlib 1.4+"
-    )
     def test_boxplot(self):
         response = self.client.get("/chart/site1/temp/boxplot.csv")
 
