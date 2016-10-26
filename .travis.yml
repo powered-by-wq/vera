@@ -21,10 +21,8 @@ before_script:
  - psql -Upostgres vera_swap_test -c "CREATE EXTENSION postgis;"
 install:
  - pip install --upgrade pip
- - pip install $DJANGO
- - pip install $DRF
- - pip install $DRP
- - pip install $WQDB
+ - pip install $DJANGO $WQDB
+ - pip install $DRF $DRP matplotlib
  - pip install flake8
 script:
  - ./runtests.sh
