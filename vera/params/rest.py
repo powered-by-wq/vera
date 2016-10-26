@@ -1,4 +1,5 @@
 from wq.db import rest
+from wq.db.patterns import serializers as patterns
 import swapper
 
 Site = swapper.load_model('params', 'Site')
@@ -7,13 +8,13 @@ Parameter = swapper.load_model('params', 'Parameter')
 
 rest.router.register_model(
     Site,
-    lookup="slug",
+    serializer=patterns.IdentifiedModelSerializer,
 )
 rest.router.register_model(
     ReportStatus,
-    lookup='slug',
+    serializer=patterns.IdentifiedModelSerializer,
 )
 rest.router.register_model(
     Parameter,
-    lookup='slug',
+    serializer=patterns.IdentifiedModelSerializer,
 )
