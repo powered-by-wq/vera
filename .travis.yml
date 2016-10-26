@@ -10,16 +10,17 @@ env:
    - WQDB="wq.db==1.0.0b1"
    - DRP="rest-pandas==0.4.1"
   matrix:
-   - DJANGO="django==1.8.14"
-   - DJANGO="django==1.9.9"
-   - DJANGO="django==1.10.1
-   - DJANGO="django==1.10.1" LINT=1
+   - DJANGO="django==1.8.15"
+   - DJANGO="django==1.9.10"
+   - DJANGO="django==1.10.2
+   - DJANGO="django==1.10.2" LINT=1
 before_script:
  - createdb -Upostgres vera_test
  - createdb -Upostgres vera_swap_test
  - psql -Upostgres vera_test -c "CREATE EXTENSION postgis;"
  - psql -Upostgres vera_swap_test -c "CREATE EXTENSION postgis;"
 install:
+ - pip install --upgrade pip
  - pip install $DJANGO
  - pip install $DRF
  - pip install $DRP
