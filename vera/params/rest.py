@@ -9,12 +9,15 @@ Parameter = swapper.load_model('params', 'Parameter')
 rest.router.register_model(
     Site,
     serializer=patterns.IdentifiedModelSerializer,
+    fields="__all__",
 )
 rest.router.register_model(
     ReportStatus,
     serializer=patterns.IdentifiedModelSerializer,
+    fields="__all__",
 )
 rest.router.register_model(
     Parameter,
     serializer=patterns.IdentifiedModelSerializer,
+    fields="__all__",
 )
