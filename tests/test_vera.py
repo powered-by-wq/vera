@@ -5,6 +5,7 @@ import datetime
 from vera.models import (
     Event, Report, ReportStatus, Site, Parameter, EventResult
 )
+from django.conf import settings
 
 
 def value_by_type(attachments):
@@ -285,3 +286,78 @@ class VeraRestTestCase(APITestCase):
         values = value_by_type(event['results'])
         self.assertEqual(values['temperature'], 7)
         self.assertEqual(values['notes'], 'Test Observation 2')
+
+    def test_vera_report_config(self):
+        response = self.client.get('/config.json')
+        self.maxDiff = None
+        expect = [
+            {
+                'name': 'entered',
+                'label': 'Entered',
+                'type': 'dateTime'
+            }, {
+                'name': 'user',
+                'label': 'User',
+                'type': 'string'
+            }, {
+                'name': 'event',
+                'label': 'Event',
+                'type': 'group',
+                'bind': {'required': True},
+                'children': [{
+                    'label': 'Site',
+                    'name': 'site[slug]',
+                    'type': 'string',
+                    'wq:ForeignKey': 'site',
+                    'wq:length': 255
+                }, {
+                    'name': 'date',
+                    'label': 'Date',
+                    'type': 'date',
+                    'bind': {'required': True},
+                }],
+            }, {
+                'name': 'status[slug]',
+                'label': 'Status',
+                'type': 'string',
+                'wq:ForeignKey': 'reportstatus',
+                'wq:length': 255
+            }, {
+                'name': 'results',
+                'label': 'Results',
+                'type': 'repeat',
+                'bind': {'required': True},
+                'children': [{
+                    'name': 'value',
+                    'label': 'Value',
+                    'type': 'string',
+                    'bind': {'required': True},
+                }, {
+                    'name': 'empty',
+                    'label': 'Empty',
+                    'type': 'string',
+                }, {
+                    'label': 'Type',
+                    'name': 'type',
+                    'type': 'string',
+                    'wq:ForeignKey': 'parameter',
+                    'bind': {'required': True},
+                }],
+                'initial': {
+                    'filter': {},
+                    'type_field': 'type'
+                },
+            }
+        ]
+
+        if settings.SWAP:
+            expect[-1]['children'].insert(2, {
+                'name': 'flag',
+                'label': 'Flag',
+                'type': 'string',
+                'wq:length': 1
+            })
+
+        actual = response.data['pages']['report']['form']
+
+        self.assertEqual(expect, actual)
