@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from wq.db.patterns import serializers as patterns
 
 import swapper
@@ -13,8 +14,21 @@ class SettableField(serializers.Field):
         return value
 
 
+class ValueValidator(object):
+    def __call__(self, attrs):
+        parameter = attrs.get('type', None)
+        if parameter and parameter.is_numeric:
+            try:
+                float(attrs['value'])
+            except (TypeError, ValueError):
+                raise ValidationError({
+                    'value': 'A valid number is required.',
+                }, code='invalid')
+
+
 class ResultSerializer(patterns.TypedAttachmentSerializer):
     value = SettableField()
+    empty = serializers.ReadOnlyField()
 
     def to_representation(self, obj):
         result = super(ResultSerializer, self).to_representation(obj)
@@ -27,6 +41,7 @@ class ResultSerializer(patterns.TypedAttachmentSerializer):
         model = Result
 
         object_field = 'report'
+        validators = [ValueValidator()]
 
 
 class EventResultSerializer(serializers.Serializer):

@@ -291,6 +291,25 @@ class VeraRestTestCase(APITestCase):
         self.assertEqual(values['temperature'], 7)
         self.assertEqual(values['notes'], 'Test Observation 2')
 
+    def test_vera_post_invalid(self):
+        form = {
+            'event[site][slug]': 'site-1',
+            'event[date]': '2016-12-31',
+            'results[0][type_id]': 'notes',
+            'results[0][value]': 'text value',
+            'results[1][type_id]': 'temperature',
+            'results[1][value]': 'text value',
+        }
+        response = self.client.post('/reports.json', form)
+        self.assertEqual(
+            response.status_code, status.HTTP_400_BAD_REQUEST
+        )
+        self.assertEqual(
+            response.data['results'][1]['value'][0],
+            "A valid number is required.",
+            response.data
+        )
+
     def test_vera_report_config(self):
         response = self.client.get('/config.json')
         self.maxDiff = None
@@ -337,10 +356,6 @@ class VeraRestTestCase(APITestCase):
                     'type': 'string',
                     'bind': {'required': True},
                 }, {
-                    'name': 'empty',
-                    'label': 'Empty',
-                    'type': 'string',
-                }, {
                     'label': 'Type',
                     'name': 'type',
                     'type': 'string',
@@ -355,7 +370,7 @@ class VeraRestTestCase(APITestCase):
         ]
 
         if settings.SWAP:
-            expect[-1]['children'].insert(2, {
+            expect[-1]['children'].insert(1, {
                 'name': 'flag',
                 'label': 'Flag',
                 'type': 'string',
