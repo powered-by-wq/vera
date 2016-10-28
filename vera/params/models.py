@@ -30,11 +30,7 @@ class BaseParameter(patterns.IdentifiedModel):
     is_numeric = models.BooleanField(default=False)
     units = models.CharField(max_length=50, null=True, blank=True)
 
-    def __str__(self):
-        if self.units:
-            return "%s (%s)" % (self.name, self.units)
-        else:
-            return self.name
+    wq_label_template = "{{name}}{{#units}} ({{units}}){{/units}}"
 
     class Meta(patterns.IdentifiedModel.Meta):
         abstract = True

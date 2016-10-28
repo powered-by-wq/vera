@@ -1,5 +1,6 @@
 from django.db import models
 from natural_keys import NaturalKeyModel
+from wq.db.patterns.models import LabelModel
 import swapper
 from django.utils.timezone import now
 from django.conf import settings
@@ -12,7 +13,7 @@ VALID_REPORT_ORDER = getattr(settings, "WQ_VALID_REPORT_ORDER", ('-entered',))
 # Extend these when swapping out default implementation (below)
 
 
-class BaseEvent(NaturalKeyModel):
+class BaseEvent(NaturalKeyModel, LabelModel):
     site = models.ForeignKey(
         swapper.get_model_name('params', 'Site'),
         null=True, blank=True, related_name="event_set",
@@ -41,6 +42,8 @@ class BaseEvent(NaturalKeyModel):
     def is_valid(self):
         return self.valid_reports.count() > 0
 
+    wq_label_template = "{{site.slug}} Event"
+
     class Meta:
         abstract = True
 
@@ -60,7 +63,7 @@ class ValidReportManager(ReportManager):
         return qs.filter(status__is_valid=True).order_by(*VALID_REPORT_ORDER)
 
 
-class BaseReport(models.Model):
+class BaseReport(LabelModel):
     event = models.ForeignKey(
         swapper.get_model_name('series', 'Event'),
         related_name="report_set"
@@ -115,11 +118,10 @@ class BaseReport(models.Model):
             self.entered = now()
         super(BaseReport, self).save(*args, **kwargs)
 
-    def __str__(self):
-        if self.pk is not None:
-            return "%s according to %s" % (self.event, self.user)
-        else:
-            return "New Report"
+    wq_label_template = (
+        "{{#event}}Report for {{site.slug}} Event{{/event}}"
+        "{{^event}}New Report{{/event}}"
+    )
 
     class Meta:
         abstract = True
@@ -130,8 +132,7 @@ class BaseReport(models.Model):
 class Event(BaseEvent):
     date = models.DateField()
 
-    def __str__(self):
-        return "%s on %s" % (self.site, self.date)
+    wq_label_template = "{{site.slug}} on {{date}}"
 
     class Meta(BaseEvent.Meta):
         db_table = 'wq_event'
@@ -141,6 +142,11 @@ class Event(BaseEvent):
 
 
 class Report(BaseReport):
+    wq_label_template = (
+        "{{#event}}Report for {{site.slug}} on {{date}}{{/event}}"
+        "{{^event}}New Report{{/event}}"
+    )
+
     class Meta(BaseReport.Meta):
         db_table = 'wq_report'
         swappable = swapper.swappable_setting('series', 'Report')

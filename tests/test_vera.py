@@ -195,6 +195,10 @@ class VeraTestCase(APITestCase):
             'Test Observation 4'
         )
 
+    def test_vera_parameter_label(self):
+        param = Parameter.objects.find('temperature')
+        self.assertEqual(str(param), 'Temperature (C)')
+
 
 class VeraRestTestCase(APITestCase):
     def setUp(self):
