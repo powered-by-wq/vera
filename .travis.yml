@@ -6,15 +6,14 @@ python:
  - "3.5"
 env:
   global:
-   - DRF="djangorestframework==3.5.1"
-   - WQDB="https://github.com/wq/wq.db/archive/master.zip"
-   - NKEY="https://github.com/wq/django-natural-keys/archive/master.zip"
+   - DRF="djangorestframework==3.5.3"
+   - WQDB="wq.db==1.0.0b3"
    - DRP="rest-pandas==0.4.1"
   matrix:
-   - DJANGO="django==1.8.15"
-   - DJANGO="django==1.9.10"
-   - DJANGO="django==1.10.2
-   - DJANGO="django==1.10.2" LINT=1
+   - DJANGO="django==1.8.16"
+   - DJANGO="django==1.9.11"
+   - DJANGO="django==1.10.3
+   - DJANGO="django==1.10.3" LINT=1
 before_script:
  - createdb -Upostgres vera_test
  - createdb -Upostgres vera_swap_test
@@ -23,7 +22,7 @@ before_script:
 install:
  - pip install --upgrade pip
  - pip install $DJANGO $DRF $DRP matplotlib
- - pip install $NKEY $WQDB
+ - pip install $WQDB
  - pip install flake8
 script:
  - ./runtests.sh

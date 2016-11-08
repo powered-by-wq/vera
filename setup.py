@@ -40,7 +40,7 @@ setup(
     packages=find_packages(exclude=['tests']),
     install_requires=[
         'natural-keys',
-        'wq.db',
+        'wq.db>=1.0.0b3',
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
