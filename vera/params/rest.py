@@ -10,14 +10,17 @@ rest.router.register_model(
     Site,
     serializer=patterns.IdentifiedModelSerializer,
     fields="__all__",
+    cache="all",
 )
 rest.router.register_model(
     ReportStatus,
     serializer=patterns.IdentifiedModelSerializer,
     fields="__all__",
+    cache="all",
 )
 rest.router.register_model(
     Parameter,
     serializer=patterns.IdentifiedModelSerializer,
     fields="__all__",
+    cache="all",
 )
