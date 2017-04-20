@@ -17,9 +17,12 @@ class SettableField(serializers.Field):
 class ValueValidator(object):
     def __call__(self, attrs):
         parameter = attrs.get('type', None)
+        value = attrs['value']
+        if value is None or value == '':
+            return
         if parameter and parameter.is_numeric:
             try:
-                float(attrs['value'])
+                float(value)
             except (TypeError, ValueError):
                 raise ValidationError({
                     'value': 'A valid number is required.',

@@ -1,11 +1,15 @@
 from wq.db import rest
 import swapper
 from .serializers import EventSerializer, ReportSerializer
+import datetime
 
 
 def user_filter(qs, request):
     if request.user.is_authenticated():
-        return qs.filter(user=request.user)
+        return qs.filter(
+            user=request.user,
+            entered__gte=datetime.date.today() - datetime.timedelta(days=14)
+        )
     else:
         return qs.none()
 
