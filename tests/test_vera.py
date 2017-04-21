@@ -351,15 +351,15 @@ class VeraRestTestCase(APITestCase):
                 'type': 'repeat',
                 'bind': {'required': True},
                 'children': [{
-                    'name': 'value',
-                    'label': 'Value',
-                    'type': 'string',
-                    'bind': {'required': True},
-                }, {
                     'label': 'Type',
                     'name': 'type',
                     'type': 'string',
                     'wq:ForeignKey': 'parameter',
+                    'bind': {'required': True},
+                }, {
+                    'name': 'value',
+                    'label': 'Value',
+                    'type': 'string',
                     'bind': {'required': True},
                 }],
                 'initial': {

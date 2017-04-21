@@ -7,7 +7,7 @@ python:
 env:
   global:
    - DRF="djangorestframework==3.5.3"
-   - WQDB="wq.db==1.0.0b3"
+   - WQDB="wq.db==1.0.0rc1"
    - DRP="rest-pandas==0.4.1"
   matrix:
    - DJANGO="django==1.8.16"
