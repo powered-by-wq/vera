@@ -24,6 +24,7 @@ class Result(vera.BaseResult):
     class Meta:
         abstract = not settings.SWAP
 
+
 if settings.SWAP:
     EventResult = vera.create_eventresult_model(
         event_cls=vera.Event,

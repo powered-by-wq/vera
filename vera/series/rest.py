@@ -13,6 +13,7 @@ def user_filter(qs, request):
     else:
         return qs.none()
 
+
 Event = swapper.load_model('series', 'Event')
 Report = swapper.load_model('series', 'Report')
 

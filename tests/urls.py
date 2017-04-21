@@ -11,6 +11,7 @@ def make_urls(views):
     ]
     return format_suffix_patterns(urls)
 
+
 chart_urls = make_urls({
     'timeseries': views.TimeSeriesView,
     'scatter': views.ScatterView,
