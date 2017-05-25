@@ -41,6 +41,7 @@ setup(
     install_requires=[
         'natural-keys',
         'data-wizard',
+        'rest-pandas',
         'wq.db>=1.0.0rc1',
     ],
     classifiers=[
@@ -54,16 +55,17 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Framework :: Django',
         'Framework :: Django :: 1.8',
         'Framework :: Django :: 1.9',
         'Framework :: Django :: 1.10',
+        'Framework :: Django :: 1.11',
         'Topic :: Scientific/Engineering :: GIS',
         'Topic :: Database :: Database Engines/Servers',
     ],
     test_suite='tests',
     tests_require=[
-        'rest-pandas',
         'psycopg2',
     ],
 )

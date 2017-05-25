@@ -12,7 +12,7 @@
 
 [![Travis Build Status](https://img.shields.io/travis/wq/vera.svg)](https://travis-ci.org/wq/vera)
 [![Python Support](https://img.shields.io/pypi/pyversions/vera.svg)](https://pypi.python.org/pypi/vera)
-[![Django Support](https://img.shields.io/badge/Django-1.8%2C%201.9%2C%201.10-blue.svg)](https://pypi.python.org/pypi/vera)
+[![Django Support](https://img.shields.io/badge/Django-1.8%2C%201.9%2C%201.10%2C%201.11-blue.svg)](https://pypi.python.org/pypi/vera)
 
 The implementation of ERAV provided by vera is optimized for storing and tracking changes to *time series data* as it is exchanged between disparate technical platforms (e.g. mobile devices, Excel spreadsheets, and third-party databases).  In this context, ERAV can be interpreted to mean Event-Report-Attribute-Value, as it represents a series of *events* being described by the *reports* submitted about them by various contributors in e.g. an environmental monitoring or citizen science project.
 
