@@ -9,11 +9,13 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'wq.db.rest',
     'wq.db.rest.auth',
+    'data_wizard',
 
     'wq.db.patterns.identify',
     'vera.params',
     'vera.series',
     'vera.results',
+    'tests.file_app',
 )
 
 DATABASES = {
@@ -28,5 +30,8 @@ ROOT_URLCONF = "tests.urls"
 MEDIA_ROOT = os.path.join(os.path.dirname(__file__), "media")
 
 SWAP = False
+WQ_DEFAULT_REPORT_STATUS = 100
+
+CELERY_RESULT_BACKEND = BROKER_URL = 'redis://localhost/0'
 
 from wq.db.default_settings import *  # noqa

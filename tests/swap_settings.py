@@ -4,6 +4,9 @@ from .settings import (  # noqa
     INSTALLED_APPS,
     ROOT_URLCONF,
     MEDIA_ROOT,
+    BROKER_URL,
+    CELERY_RESULT_BACKEND,
+    WQ_DEFAULT_REPORT_STATUS,
 )
 
 SWAP = True

@@ -23,6 +23,9 @@ install:
  - pip install --upgrade pip
  - pip install $DJANGO $DRF $DRP matplotlib
  - pip install $WQDB
+ - pip install https://github.com/wq/django-data-wizard/archive/master.zip
  - pip install flake8
 script:
  - ./runtests.sh
+services:
+ - redis-server

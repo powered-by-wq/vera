@@ -1,0 +1,5 @@
+slug,name,units,is_numeric
+temperature,Temperature,F,1
+precipitation,Precipitation,in,1
+snowfall,Snowfall,in,1
+snow-depth,Snow Depth,in,1

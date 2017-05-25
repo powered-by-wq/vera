@@ -47,14 +47,13 @@ class SwapRestTestCase(APITestCase):
             'status[slug]': 'valid'
         }
         response = self.client.post('/reports.json', form)
-        return
         self.assertEqual(
             response.status_code, status.HTTP_201_CREATED,
             response.data
         )
         self.assertEqual(
             response.data['event_label'],
-            "site-1 on 2014-01-03"
+            "site-1 on 2016-12-31"
         )
         self.assertIn("results", response.data)
         self.assertEqual(len(response.data["results"]), 1)

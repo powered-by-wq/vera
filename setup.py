@@ -40,6 +40,7 @@ setup(
     packages=find_packages(exclude=['tests']),
     install_requires=[
         'natural-keys',
+        'data-wizard',
         'wq.db>=1.0.0rc1',
     ],
     classifiers=[
