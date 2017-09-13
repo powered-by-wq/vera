@@ -39,10 +39,10 @@ setup(
     long_description=parse_markdown_readme(),
     packages=find_packages(exclude=['tests']),
     install_requires=[
-        'natural-keys',
-        'data-wizard',
-        'rest-pandas',
-        'wq.db>=1.0.0rc1',
+        'natural-keys>=1.2.1',
+        'data-wizard>=1.0.1',
+        'rest-pandas>=1.0.0',
+        'wq.db>=1.0.0',
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
