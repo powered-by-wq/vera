@@ -15,7 +15,7 @@ def parse_markdown_readme():
     import subprocess
     try:
         subprocess.call(
-            ['pandoc', '-t', 'rst', '-o', 'README.rst', 'README.md']
+            ['pandoc', '-t', 'rst', '-o', 'README.rst', '--wrap=none', 'README.md']
         )
     except OSError:
         return LONG_DESCRIPTION
