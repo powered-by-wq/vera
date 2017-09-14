@@ -1,9 +1,11 @@
 from os.path import join, dirname
 from setuptools import setup, find_packages
 
-LONG_DESCRIPTION = """
-Reference implementation of the ERAV data model for citizen science.  ERAV is an extension to EAV with support for maintaining multi-faceted provenance metadata for an entity.
-"""
+LONG_DESCRIPTION = (
+    "Reference implementation of the ERAV data model for citizen science."
+    " ERAV is an extension to EAV with support for maintaining multi-faceted"
+    " provenance metadata for an entity."
+)
 
 
 def parse_markdown_readme():
