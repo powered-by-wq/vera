@@ -42,7 +42,7 @@ class BaseEvent(NaturalKeyModel, LabelModel):
     def is_valid(self):
         return self.valid_reports.count() > 0
 
-    wq_label_template = "{{site.slug}} Event"
+    wq_label_template = "{{{site.slug}}} Event"
 
     class Meta:
         abstract = True
@@ -119,7 +119,7 @@ class BaseReport(LabelModel):
         super(BaseReport, self).save(*args, **kwargs)
 
     wq_label_template = (
-        "{{#event}}Report for {{site.slug}} Event{{/event}}"
+        "{{#event}}Report for {{{site.slug}}} Event{{/event}}"
         "{{^event}}New Report{{/event}}"
     )
 
@@ -132,7 +132,7 @@ class BaseReport(LabelModel):
 class Event(BaseEvent):
     date = models.DateField()
 
-    wq_label_template = "{{site.slug}} on {{date}}"
+    wq_label_template = "{{{site.slug}}} on {{{date}}}"
 
     class Meta(BaseEvent.Meta):
         db_table = 'wq_event'
@@ -143,7 +143,7 @@ class Event(BaseEvent):
 
 class Report(BaseReport):
     wq_label_template = (
-        "{{#event}}Report for {{site.slug}} on {{date}}{{/event}}"
+        "{{#event}}Report for {{{site.slug}}} on {{{date}}}{{/event}}"
         "{{^event}}New Report{{/event}}"
     )
 
